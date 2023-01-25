@@ -2,7 +2,7 @@
 
 KEEP YNAB4 ALIVE!
 
-Patches the deprecated YNAB4\_classic-3.4.1 Android app to use TLS1.2, allowing it to continue syncing with Dropbox.  
+Quick script to patches the deprecated YNAB4\_classic-3.4.1 Android app to use TLS1.2, allowing it to continue syncing with Dropbox.  
   
   Unfortunately the app is no longer on Google Play, so you will need to find your own copy from backups or whatever. If you downloaded it from Google Play previously, you can still download it, though.
   
@@ -22,6 +22,21 @@ Homebrew also has these.
 	brew install android-commandlinetools
 	//then run
 	sdkmanager --install "build-tools;33.0.0"
+
+The build tools install in weird places. Althought the script looks in common places on macOS, probably you should export them to your PATH before running the script.
+
+	export PATH="/path/to/sdk/build-tools:$PATH"
+	./YNABPATCH.sh ./classic.apk
+
+### Signing
+
+Create a keystore if you dont already have one. 
+
+	keytool -genkey -v -keystore YNABkey.keystore -alias YNABkey -keyalg RSA -keysize 2048 -validity 1825
+
+Then sign the apk.
+
+	apksigner sign --ks-key-alias YNABkey --ks YNABkey.keystore YNAB4_classic_3.4.1_dropbox_tlspatched.apk 
 
 ### Tested
 Only on MacOS Monterey.
